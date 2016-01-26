@@ -1,0 +1,17 @@
+Use this file to explain how your sploit3 works.
+
+Read about vtables.
+
+Find the adddress of the str's vtable and the address of buf.
+
+Find the difference of the vtable's address and buf's address.
+
+Our arg1 size will be this size. We want to overwrite the vtable address to point to our fake vtable. Also we want to see the address for the next function str.getLen(). We can see that it is the 4th int.
+
+We overwrite the last byte of our arg1 buffer with the address at the start of our buf.
+
+In our buf we overwrite the address at the 4th int location which is 12 bytes to point to our shell code.
+
+We put our shellcode at an arbitrary location in the middle of our arg1 buffer where it will be larger than 12 and smaller than our arg1 buffer size - the length of the shellcode.
+
+When we overflow the buffer the vtable's address doesn't point to the real vtable's address anymore but it points to the beginning of our buffer. Our buffer then has another address at the 12th byte which is supposed to point to where the function str.getLen() is supposed to be but it actually points to our shellcode. Then our shellcode runs and we get root access.

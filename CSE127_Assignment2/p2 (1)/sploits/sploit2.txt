@@ -1,0 +1,11 @@
+Use this file to explain how your sploit2 works.
+
+Used a really big number in the first argument in order to make it negative and pass the check for the if statement before memcpy and be able to write enough bytes to overflow. 
+
+In GDB used call and set to find the correct number to be bigger than the max size that buf * sizeof(struct widget_t) could be so we can overflow. This will be the size of our arg1. 
+
+Then for every 4 bytes of arg1 fill it with the address of your shellcode which is the address at the start of your buffer arg1 + the length of your large integer + 1 for the comma. 
+
+Then put your shell code in your buffer after the large integer and comma.
+
+This exploit uses the same technique as sploit0 and sploit1 but the only difference is that there's a check to see how big a number is which will be used to determine how many bytes to write. We want to write a large amount of bytes to overflow the buffer and overwrite the link register which will let us return to our buffer's shellcode. We use a negative number which wraps around and becomes positive after the check and because memcpy doesn't know any better it writes a huge amount of bytes. We then overwrite link register and redirect control flow to our shell code and gain root access.

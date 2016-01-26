@@ -1,0 +1,15 @@
+Use this file to explain how your sploit1 works.
+
+This exploit uses the same strcpy exploit as in sploit0. 
+
+The only difference is that there are two functions now to try to throw you off but you just need to make a breakpoint at foo and get the buffer address in foo then the steps to overflow the buffer are the same as in sploit0:
+
+Used GDB to find the address of the buffer and the link register. 
+
+Found the distance it takes to overwrite the link register by finding the difference of the two addresses. 
+
+Created a large enough buffer equal to or greater than the difference of the two addresses. 
+
+Wrote the address of buf in the location where the link register should be.
+
+This exploit just uses the fact that link register is used to return after a function and we overwrite it by writing more than the size of the buffer. Link register then gets changed to the beginning of our buffer which is where our shell code is. Our shell code gets executed and we have root access.
